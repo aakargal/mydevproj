@@ -12,6 +12,7 @@ pipeline {
          script {
            withSonarQubeEnv(credentialsId: 'sonarqube-token') {
                  sh 'chmod +x gradlew'
+                 sh 'java -version'
                  sh './gradlew sonarqube'
 
            }
