@@ -9,16 +9,16 @@ pipeline {
     stage("docker build and docker push") {
        steps {
          script {
+            withDockerRegistry(credentialsId: 'docker-credential', url: 'https://registry-1.docker.io/v2/') {
+             def customImage = docker.build("amol273/myrespository:${env.BUILD_ID}")
 
-           withCredentials([string(credentialsId: 'docker-password', variable: 'docker-pass')]) {
-          sh '''
-            docker build -t amol273/myrespository:${version} .
-            docker login -u amol273 -p $docker-pass 
-            docker push amol273/myrespository:${version}
-            docker rmi amol273/myrespository:${version}
+        /* Push the container to the custom Registry */
+        customImage.push()
+  
+            }
 
-          '''
           }
+
          }
       
        }
