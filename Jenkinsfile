@@ -1,29 +1,30 @@
 pipeline {
   agent any 
-  stages {
-    stage("sonar quality check") {
-       agent {
-           docker {
+  environment {
+   version = "${env.BUILD_ID}"
 
-             image 'openjdk:11'             
-           }
-       } 
+  }
+
+  stages {
+    stage("docker build and docker push") {
        steps {
          script {
-           withSonarQubeEnv(credentialsId: 'sonarqube-token') {
-                 sh 'chmod +x gradlew'
-                 sh 'java -version'
-                 sh './gradlew sonarqube'
-                 sh 'gradle --status'
-           }
 
-        }
+           withCredentials([string(credentialsId: 'docker-password', variable: 'docker-pass')]) {
+          sh '''
+            docker build -t amol273/myrespository:${version}
+            docker login -u amol273 -p $docker-pass 
+            docker push amol273/myrespository:${version}
+            docker rmi amol273/myrespository:${version}
 
-      }
- 
+          '''
+          }
+         }
+      
+       }
 
+   }
 
-    }
   }
 
 }
