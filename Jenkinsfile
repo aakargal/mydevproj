@@ -12,8 +12,7 @@ pipeline {
             withDockerRegistry(credentialsId: 'docker-credential', url: 'https://registry-1.docker.io/v2/') {
              def customImage = docker.build("amol273/myrespository:${env.BUILD_ID}")
 
-        /* Push the container to the custom Registry */
-        customImage.push()
+             customImage.push()
   
             }
 
@@ -24,7 +23,5 @@ pipeline {
        }
 
    }
-
-  }
 
 }
