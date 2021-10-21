@@ -1,4 +1,4 @@
-# CICD_Java_gradle_application
+# CICD_Java
 
 This application is java spring boot web application  
 
